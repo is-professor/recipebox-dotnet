@@ -1,0 +1,24 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Recipes";
+}
+
+<h1>Recipes</h1>
+
+<table class="table">
+    <thead>
+        <tr><th>Title</th><th>Servings</th><th>Prep time</th><th>Ingredients</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var recipe in Model.Recipes)
+        {
+            <tr>
+                <td><a asp-page="/Recipes/Details" asp-route-id="@recipe.Id">@recipe.Title</a></td>
+                <td>@recipe.Servings</td>
+                <td>@recipe.PrepMinutes min</td>
+                <td>@recipe.IngredientCount</td>
+            </tr>
+        }
+    </tbody>
+</table>

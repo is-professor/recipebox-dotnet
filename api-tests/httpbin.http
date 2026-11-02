@@ -1,0 +1,16 @@
+### C1: a GET request with a query string and a custom header
+GET https://httpbin.org/get?course=is&week=2
+Accept: application/json
+X-Student: lab-USER
+
+### C1: a POST request with a JSON body
+POST https://httpbin.org/post
+Content-Type: application/json
+
+{
+  "title": "Spinach and feta omelette",
+  "servings": 2
+}
+
+### Bonus: see different status codes
+GET https://httpbin.org/status/404

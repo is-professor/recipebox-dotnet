@@ -1,0 +1,45 @@
+@page
+@{
+    ViewData["Title"] = "Recipes (client-side)";
+}
+
+<h1>Recipes <small class="text-muted">rendered in the browser</small></h1>
+
+<p id="status">Loading…</p>
+<table class="table" hidden>
+    <thead>
+        <tr><th>Title</th><th>Servings</th><th>Prep time</th><th>Ingredients</th></tr>
+    </thead>
+    <tbody id="recipes"></tbody>
+</table>
+
+@section Scripts {
+    <script>
+        // S1: the server sends an empty page; the browser fetches JSON and builds the table.
+        async function loadRecipes() {
+            const status = document.getElementById("status");
+            try {
+                const response = await fetch("/api/recipes");
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const recipes = await response.json();
+
+                const body = document.getElementById("recipes");
+                for (const recipe of recipes) {
+                    const row = body.insertRow();
+                    const link = document.createElement("a");
+                    link.href = `/Recipes/Details/${recipe.id}`;
+                    link.textContent = recipe.title;   // textContent, not innerHTML: no XSS
+                    row.insertCell().append(link);
+                    row.insertCell().textContent = recipe.servings;
+                    row.insertCell().textContent = `${recipe.prepMinutes} min`;
+                    row.insertCell().textContent = recipe.ingredientCount;
+                }
+                body.closest("table").hidden = false;
+                status.hidden = true;
+            } catch (error) {
+                status.textContent = `Could not load recipes: ${error.message}`;
+            }
+        }
+        loadRecipes();
+    </script>
+}

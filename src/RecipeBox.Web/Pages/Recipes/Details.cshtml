@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model RecipeBox.Web.Pages.Recipes.DetailsModel
+@{
+    ViewData["Title"] = Model.Recipe.Title;
+}
+
+<p><a asp-page="/Index">&larr; All recipes</a></p>
+
+<h1>@Model.Recipe.Title</h1>
+<p class="text-muted">@Model.Recipe.Servings servings · @Model.Recipe.PrepMinutes min</p>
+@if (Model.Recipe.Description is not null)
+{
+    <p>@Model.Recipe.Description</p>
+}
+
+<h2 class="h4">Ingredients</h2>
+<ul>
+    @foreach (var line in Model.Recipe.Ingredients)
+    {
+        <li>@line.Quantity.ToString("0.##") @line.Unit @line.Name</li>
+    }
+</ul>
+
+<h2 class="h4">Steps</h2>
+<ol>
+    @foreach (var step in Model.Recipe.Steps)
+    {
+        <li>@step</li>
+    }
+</ol>
